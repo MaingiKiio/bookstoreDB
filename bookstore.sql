@@ -67,3 +67,44 @@ CREATE TABLE publisher(
     publisher_name VARCHAR(100) NOT NULL,
     contact_number VARCHAR(15) NOT NULL,
 );
+
+CREATE TABLE cust_order (
+order_id INT AUTO_INCREMENT PRIMARY KEY,
+customer_id INT,
+order_date DATE,
+shipping_method_id INT,
+order_status_id INT,
+total_amount INT,
+FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
+FOREIGN KEY (shipping_method_id) REFERENCES shipping_method(shipping_method_id),
+FOREIGN KEY (order_status_id) REFERENCES order_status(order_status_id)
+);
+
+CREATE TABLE order_line (
+order_id INT,
+book_id INT,
+price_at_purchase INT,
+FOREIGN KEY (order_id) REFERENCES cust_order(order_id),
+FOREIGN KEY (book_id) REFERENCES book(book_id)
+);
+
+CREATE TABLE shipping_method (
+shipping_method_id INT AUTO_INCREMENT PRIMARY KEY,
+method_name VARCHAR(100),
+shipping_cost INT
+);
+
+CREATE TABLE order_history(
+history_id INT AUTO_INCREMENT PRIMARY KEY,
+order_id INT,
+order_status_id INT,
+updated_at DATE,
+remarks VARCHAR(255),
+FOREIGN KEY (order_id) REFERENCES cust_order(order_id),
+FOREIGN KEY (order_status_id) REFERENCES order_status(order_status_id)
+)
+
+CREATE TABLE ORDER_STATUS(
+order_status_id INT AUTO_INCREMENT PRIMARY KEY,
+status_name VARCHAR(100),
+)
